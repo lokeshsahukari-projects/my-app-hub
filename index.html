@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My App Hub</title>
+<style>
+:root{--bg0:#e6ecff;--bg1:#fbeeff;--ink:#14161f;--mute:#5b6178;--glass:rgba(255,255,255,.5);--glass2:rgba(255,255,255,.72);--line:rgba(255,255,255,.75);--hi:rgba(255,255,255,.9);--glare:rgba(255,255,255,.7);--shadow:0 12px 32px rgba(60,70,130,.16);--o1:#7aa7ff;--o2:#ff9ad5;--o3:#7ef0d0;--acc:#0a84ff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg0:#07080f;--bg1:#120d24;--ink:#f4f5fb;--mute:#9aa0b8;--glass:rgba(255,255,255,.08);--glass2:rgba(255,255,255,.13);--line:rgba(255,255,255,.16);--hi:rgba(255,255,255,.22);--glare:rgba(255,255,255,.14);--shadow:0 14px 36px rgba(0,0,0,.45);--o1:#3b5bff;--o2:#b4339a;--o3:#0f9d8a;--acc:#4da3ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg0:#07080f;--bg1:#120d24;--ink:#f4f5fb;--mute:#9aa0b8;--glass:rgba(255,255,255,.08);--glass2:rgba(255,255,255,.13);--line:rgba(255,255,255,.16);--hi:rgba(255,255,255,.22);--glare:rgba(255,255,255,.14);--shadow:0 14px 36px rgba(0,0,0,.45);--o1:#3b5bff;--o2:#b4339a;--o3:#0f9d8a;--acc:#4da3ff;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(160deg,var(--bg0),var(--bg1));transition:color .5s}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg0);backdrop-filter:blur(20px)}
+.orb{position:fixed;width:48vmax;height:48vmax;border-radius:50%;filter:blur(90px);opacity:.6;z-index:-1;animation:float 20s ease-in-out infinite alternate;pointer-events:none}
+.o1{background:var(--o1);top:-14vmax;left:-12vmax}.o2{background:var(--o2);right:-14vmax;top:20vh;animation-duration:26s}.o3{background:var(--o3);bottom:-18vmax;left:25vw;animation-duration:32s}
+@keyframes float{to{transform:translate(8vw,6vh) scale(1.18) rotate(30deg)}}
+.glass{background:var(--glass);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--line);box-shadow:var(--shadow),inset 0 1px 0 var(--hi)}
+.bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:12px;max-width:1180px;margin:10px 12px 0;padding:10px 14px;border-radius:30px;animation:drop .8s cubic-bezier(.2,.9,.3,1.2) both}
+@media(min-width:1204px){.bar{margin-inline:auto}}
+@keyframes drop{from{opacity:0;transform:translateY(-30px) scale(.96)}}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.02em;white-space:nowrap}
+.logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(145deg,#0a84ff,#bf5af2);display:grid;grid-template-columns:repeat(3,6px);gap:3px;place-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 6px 14px rgba(10,132,255,.35)}
+.logo i{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 2.4s ease-in-out infinite}.logo i:nth-child(2n){animation-delay:.3s}.logo i:nth-child(3n){animation-delay:.6s}
+@keyframes pulse{50%{transform:scale(.55);opacity:.6}}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:10px;height:44px;padding:0 14px;border-radius:22px;background:var(--glass2);border:1px solid var(--line);transition:box-shadow .3s,transform .3s}
+.search:focus-within{box-shadow:0 0 0 4px color-mix(in srgb,var(--acc) 30%,transparent);transform:scale(1.015)}
+.search svg{width:18px;height:18px;stroke:var(--mute);fill:none;stroke-width:2;stroke-linecap:round;flex:none}
+.search input{flex:1;min-width:0;border:0;outline:0;background:none;color:var(--ink);font:inherit;font-size:16px}
+.search input::placeholder{color:var(--mute)}
+kbd{font:600 12px inherit;color:var(--mute);border:1px solid var(--line);border-radius:7px;padding:2px 7px}
+.seg{position:relative;display:flex;padding:4px;border-radius:22px;background:var(--glass2);border:1px solid var(--line)}
+.seg button{position:relative;z-index:1;width:84px;height:34px;border:0;background:none;color:var(--ink);font:600 14px inherit;cursor:pointer;border-radius:18px;transition:transform .2s}
+.seg button:active{transform:scale(.92)}
+.thumb{position:absolute;top:4px;left:4px;width:84px;height:34px;border-radius:18px;background:var(--glass);box-shadow:0 4px 12px rgba(0,0,0,.18),inset 0 1px 0 var(--hi);backdrop-filter:blur(10px);transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
+:root[data-theme="dark"] .thumb{transform:translateX(84px)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px 60px}
+.hero{text-align:center;padding:54px 0 26px}
+.hero h1{margin:0;font-size:clamp(36px,7vw,68px);font-weight:800;letter-spacing:-.04em;line-height:1.05;background:linear-gradient(90deg,var(--ink),var(--acc),#ff5fa2,var(--ink));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 9s linear infinite}
+@keyframes shine{to{background-position:-300% 0}}
+.hero p{color:var(--mute);font-size:clamp(15px,2.2vw,19px);margin:14px auto 0;max-width:560px;animation:up .9s .2s both}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+.chips{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 14px;scrollbar-width:none;justify-content:center;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(16px);color:var(--ink);padding:9px 16px;border-radius:20px;font:600 14px inherit;cursor:pointer;box-shadow:inset 0 1px 0 var(--hi);transition:transform .25s cubic-bezier(.3,1.5,.5,1),background .3s,color .3s}
+.chip:hover{transform:translateY(-2px) scale(1.05)}.chip:active{transform:scale(.94)}
+.chip[aria-pressed=true]{background:var(--acc);color:#fff;border-color:transparent;box-shadow:0 8px 20px color-mix(in srgb,var(--acc) 45%,transparent)}
+.chip small{opacity:.65;margin-left:5px}
+section{margin-top:34px}
+section h2{display:flex;align-items:baseline;gap:12px;margin:0 4px 4px;font-size:26px;letter-spacing:-.02em}
+section h2 span{font-size:14px;font-weight:500;color:var(--mute)}
+section>p{margin:0 4px 16px;color:var(--mute);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:16px}
+.card{position:relative;overflow:hidden;padding:16px;border-radius:28px;opacity:0;transform:translateY(22px) scale(.96);transition:opacity .6s ease var(--d,0ms),transform .6s cubic-bezier(.2,.8,.2,1) var(--d,0ms),box-shadow .3s,background .3s}
+.card.in{opacity:1;transform:none}
+.card.in:hover{transform:translateY(-7px) scale(1.025);box-shadow:0 22px 44px rgba(40,50,110,.28),inset 0 1px 0 var(--hi)}
+.card::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,0%),var(--glare),transparent 62%)}
+.card:hover::after{opacity:1}
+.top{display:flex;align-items:center;gap:13px}
+.ic{position:relative;flex:none;width:58px;height:58px;border-radius:14px;display:grid;place-items:center;overflow:hidden;box-shadow:inset 0 1px 1px rgba(255,255,255,.55),inset 0 -6px 12px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.2);transition:transform .45s cubic-bezier(.3,1.6,.5,1)}
+.ic b{color:#fff;font-size:25px;text-shadow:0 2px 6px rgba(0,0,0,.35)}
+.ic img{position:absolute;inset:0;width:100%;height:100%;padding:9px;object-fit:contain;display:none}
+.ic.ok{background:#fff!important}.ic.ok img{display:block}.ic.ok b{display:none}
+.card:hover .ic{transform:rotate(-7deg) scale(1.12)}
+.nm{font-weight:700;font-size:16px;letter-spacing:-.01em;line-height:1.2}
+.tg{color:var(--mute);font-size:13px;margin-top:3px}
+.acts{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;position:relative;z-index:1}
+.btn{flex:1;min-width:max-content;display:inline-flex;gap:5px;align-items:center;justify-content:center;padding:8px 12px;border-radius:14px;font:600 13px inherit;text-decoration:none;color:var(--ink);background:var(--glass2);border:1px solid var(--line);transition:transform .2s cubic-bezier(.3,1.6,.5,1),background .25s,color .25s}
+.btn:hover{background:var(--acc);color:#fff;transform:scale(1.06)}.btn:active{transform:scale(.93)}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.btn.open{flex:1 1 100%;padding:13px 20px;font-size:16px;border-radius:17px;background:var(--acc);color:#fff;border-color:transparent;box-shadow:0 8px 22px color-mix(in srgb,var(--acc) 42%,transparent)}.btn.open:hover{filter:brightness(1.12);transform:scale(1.04)}
+.empty{display:none;text-align:center;padding:60px 20px;color:var(--mute);font-size:18px}
+.empty.show{display:block;animation:up .5s both}
+footer{text-align:center;color:var(--mute);font-size:13px;margin-top:50px;line-height:1.6}
+@media(max-width:560px){.seg button,.thumb{width:44px}:root[data-theme="dark"] .thumb{transform:translateX(44px)}.seg .t{display:none}.brand span{display:none}.grid{grid-template-columns:1fr 1fr;gap:12px}.card{padding:13px;border-radius:24px}.top{flex-direction:column;align-items:flex-start}kbd{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}.card{opacity:1;transform:none}}
+</style></head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+<header class="bar glass">
+  <div class="brand"><div class="logo"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span>My App Hub</span></div>
+  <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Search apps, games, websites…" autocomplete="off" aria-label="Search apps"><kbd>/</kbd></label>
+  <div class="seg" role="group" aria-label="Theme"><div class="thumb"></div>
+    <button data-m="light" aria-pressed="false">☀︎<span class="t"> Light</span></button>
+    <button data-m="dark" aria-pressed="false">☾<span class="t"> Dark</span></button></div>
+</header>
+<main class="wrap">
+  <div class="hero"><h1>Everything you use,<br>in one glassy hub.</h1><p id="stat">Google, social, Microsoft, AI tools and games, with one tap to open or download.</p></div>
+  <nav class="chips" id="chips"></nav>
+  <div id="app"></div>
+  <div class="empty" id="empty">No matches. Try another name or category.</div>
+  <footer>Names and logos belong to their owners. “Android” and “iOS” buttons open the official Google Play or App Store page to download.<br>Web-only tools (like Google Forms) have no mobile download; use Open.</footer>
+</main>
+<script>
+// [name, tag, gradient colors, glyph, website, Google Play package ('' = search, 0 = none), App Store id (0 = none), icon site]
+const D=[
+['google','Google Apps','Everything from the Chrome app grid',[
+['Search','Web search','#4285f4,#34a853','G','www.google.com','com.google.android.googlequicksearchbox','284815942'],
+['Gmail','Email','#ea4335,#c5221f','M','mail.google.com','com.google.android.gm','422689480'],
+['Drive','Cloud storage','#1fa463,#ffd04b','▲','drive.google.com','com.google.android.apps.docs','507874739'],
+['Docs','Documents','#4285f4,#1a73e8','D','docs.google.com/document','com.google.android.apps.docs.editors.docs','842842640'],
+['Sheets','Spreadsheets','#34a853,#188038','S','docs.google.com/spreadsheets','com.google.android.apps.docs.editors.sheets','842849113'],
+['Slides','Presentations','#fbbc04,#f29900','P','docs.google.com/presentation','com.google.android.apps.docs.editors.slides','879478102'],
+['Forms','Surveys & quizzes','#7248b9,#5e35b1','F','docs.google.com/forms',0,0],
+['Calendar','Schedule','#4285f4,#1967d2','31','calendar.google.com','com.google.android.calendar','909319292'],
+['Meet','Video calls','#00ac47,#00832d','▶','meet.google.com','com.google.android.apps.tachyon','1013231476'],
+['Maps','Navigation','#34a853,#ea4335','⌖','maps.google.com','com.google.android.apps.maps','585027354'],
+['YouTube','Videos','#ff1a1a,#c4302b','▶','www.youtube.com','com.google.android.youtube','544007664'],
+['Photos','Gallery & backup','#ea4335,#4285f4','✿','photos.google.com','com.google.android.apps.photos','962194608'],
+['Translate','100+ languages','#4285f4,#2a56c6','文','translate.google.com','com.google.android.apps.translate','414706506'],
+['Keep','Notes','#fbbc04,#f9ab00','✎','keep.google.com','com.google.android.keep','1029207872'],
+['Earth','3D globe','#2f80ed,#34a853','◉','earth.google.com','com.google.earth','293622097'],
+['Chrome','Browser','#ea4335,#fbbc04','◎','www.google.com/chrome','com.android.chrome','535886823'],
+['Play Store','Apps & games','#00c3ff,#34a853','▶','play.google.com','com.android.vending',0]]],
+['social','Social & Messaging','Chat, share and scroll',[
+['Instagram','Photos & reels','#f58529,#dd2a7b,#8134af','◎','www.instagram.com','com.instagram.android','389801252'],
+['WhatsApp','Messaging','#25d366,#128c7e','✆','web.whatsapp.com','com.whatsapp','310633997'],
+['Snapchat','Snaps & stories','#ffd400,#ffa800','👻','www.snapchat.com','com.snapchat.android','447188370'],
+['Telegram','Fast messaging','#2aabee,#229ed9','➤','web.telegram.org','org.telegram.messenger','686449807'],
+['Facebook','Social network','#1877f2,#0c5adb','f','www.facebook.com','com.facebook.katana','284882215'],
+['X','Posts & news','#111,#3a3a3a','𝕏','x.com','com.twitter.android','333903271'],
+['Pinterest','Ideas & boards','#e60023,#bd081c','P','www.pinterest.com','com.pinterest','429047995'],
+['LinkedIn','Professional network','#0a66c2,#004182','in','www.linkedin.com','com.linkedin.android','288429040'],
+['Reddit','Communities','#ff4500,#ff7a45','◉','www.reddit.com','com.reddit.frontpage','1064216828'],
+['Discord','Voice & chat','#5865f2,#4752c4','◍','discord.com/app','com.discord','985746746'],
+['Threads','Text conversations','#111,#444','@','www.threads.net','com.instagram.barcelona','6446901002']]],
+['ms','Microsoft Apps','Everything that runs in the browser',[
+['Microsoft 365','Office hub','#ea3e23,#d83b01','▣','www.microsoft365.com','com.microsoft.office.officehubrow','541164041'],
+['Word','Documents','#2b7cd3,#185abd','W','www.office.com/launch/word','com.microsoft.office.word','586447913'],
+['Excel','Spreadsheets','#21a366,#107c41','X','www.office.com/launch/excel','com.microsoft.office.excel','586683407'],
+['PowerPoint','Presentations','#e8643b,#c43e1c','P','www.office.com/launch/powerpoint','com.microsoft.office.powerpoint','586449534'],
+['Outlook','Email & calendar','#0a78d4,#0364b8','O','outlook.live.com','com.microsoft.office.outlook','951937596'],
+['OneDrive','Cloud storage','#28a8ea,#0364b8','☁','onedrive.live.com','com.microsoft.skydrive','477537958'],
+['OneNote','Notebooks','#9b4fc9,#7719aa','N','www.onenote.com','com.microsoft.office.onenote','410395246'],
+['Teams','Meetings & chat','#6264a7,#464eb8','T','teams.microsoft.com','com.microsoft.teams','1113153706'],
+['To Do','Task lists','#3b82f6,#2564cf','✓','to-do.live.com','com.microsoft.todos','1212616790'],
+['SharePoint','Team sites','#038387,#026a6e','S','www.microsoft.com/microsoft-365/sharepoint/collaboration','com.microsoft.sharepoint',0],
+['Planner','Plans & tasks','#31752f,#1f5c2d','▦','tasks.office.com',0,0],
+['Clipchamp','Video editor','#7c4dff,#5b2fd6','✂','app.clipchamp.com',0,0]]],
+['ai','AI & Creative Tools','Chat, create and design',[
+['ChatGPT','AI assistant','#10a37f,#0b7a5e','✺','chatgpt.com','com.openai.chatgpt','6448311069'],
+['Gemini','Google AI','#4285f4,#a142f4,#ea4335','✦','gemini.google.com','com.google.android.apps.bard','6477489729'],
+['Claude','AI by Anthropic','#d97757,#b85c3d','✺','claude.ai','com.anthropic.claude','6473753684'],
+['Copilot','Microsoft AI','#2a7de1,#8a5cf6','◈','copilot.microsoft.com','com.microsoft.copilot','6472538445'],
+['Perplexity','AI search','#20808d,#1a5f69','✱','www.perplexity.ai','ai.perplexity.app.android','1668000334'],
+['DeepSeek','AI chat','#4d6bfe,#3a52d4','◉','chat.deepseek.com','com.deepseek.chat',0],
+['Canva','Design anything','#00c4cc,#7d2ae8','C','www.canva.com','com.canva.editor','897446215'],
+['Midjourney','AI images','#222,#555','⛵','www.midjourney.com',0,0]]],
+['games','Mobile Games','Download and play',[
+['Hill Climb Racing','Physics racing','#ff9800,#e65100','🚙','','com.fingersoft.hillclimb','564540143','fingersoft.com'],
+['Subway Surfers','Endless runner','#00b8d4,#ff4081','🏃','','com.kiloo.subwaysurf','512939461','subwaysurfers.com'],
+['BGMI','Battle royale','#f5a623,#c0392b','🎯','','com.pubg.imobile',0,'battlegroundsmobileindia.com'],
+['Free Fire MAX','Battle royale','#ff6a00,#c62828','🔥','','com.dts.freefiremax',0,'ff.garena.com'],
+['Dr. Driving','Driving sim','#43a047,#1b5e20','🚗','','',0],
+['Ludo King','Board game','#e53935,#fdd835','🎲','','com.ludo.king',0,'ludoking.com'],
+['Angry Birds 2','Slingshot puzzle','#e53935,#b71c1c','🐦','','com.rovio.baba','880047117','angrybirds.com'],
+['Traffic Rider','Motorbike racing','#546e7a,#263238','🏍','','',0],
+['Temple Run 2','Endless runner','#fb8c00,#6d4c41','🏛','','com.imangi.templerun2','572395608'],
+['Candy Crush Saga','Match-3 puzzle','#ec407a,#7b1fa2','🍬','','com.king.candycrushsaga','553834731'],
+['Minecraft','Sandbox','#5d8c3a,#3e2f1c','⛏','','com.mojang.minecraftpe','479516143'],
+['Among Us','Social deduction','#c51111,#7a0a0a','👾','','com.innersloth.spacemafia','1351168404']]],
+['sites','Game Websites','Play instantly in your browser',[
+['Poki','Free online games','#00a1ff,#7a5cff','P','poki.com',0,0],
+['CrazyGames','Free online games','#7b3fe4,#5b21b6','C','www.crazygames.com',0,0],
+['Miniclip','Classic web games','#e53935,#ff7043','M','www.miniclip.com',0,0],
+['Y8','Thousands of games','#ff5722,#d84315','Y8','www.y8.com',0,0],
+['itch.io','Indie games','#fa5c5c,#c93a3a','i','itch.io',0,0],
+['Armor Games','Flash-style favourites','#d32f2f,#7f1d1d','A','armorgames.com',0,0]]]
+];
+const $=s=>document.querySelector(s),H=u=>u.startsWith('http')?u:'https://'+u;
+const DL='<svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>';
+const app=$('#app'),chips=$('#chips'),q=$('#q');let cat='all',total=0;
+const io='IntersectionObserver'in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const t=e.target;t.classList.add('in');io.unobserve(t);setTimeout(()=>t.style.setProperty('--d','0ms'),1000)}}),{threshold:.08}):null;
+function card(a,i,id){const[n,t,c,g,u,p,s,d]=a;const el=document.createElement('article');el.className='card glass';el.style.setProperty('--d',(i%12)*50+'ms');el.dataset.q=(n+' '+t+' '+id).toLowerCase();
+ let b='';if(u)b+=`<a class="btn open" href="${H(u)}" target="_blank" rel="noopener">${id==='sites'?'Play now':'Open'} ↗</a>`;
+ if(p!==0)b+=`<a class="btn" href="${p?'https://play.google.com/store/apps/details?id='+p:'https://play.google.com/store/search?c=apps&q='+encodeURIComponent(n)}" target="_blank" rel="noopener">${DL}Android</a>`;
+ if(s)b+=`<a class="btn" href="https://apps.apple.com/app/id${s}" target="_blank" rel="noopener">${DL}iOS</a>`;
+ el.innerHTML=`<div class="top"><span class="ic" style="background:linear-gradient(145deg,${c})"><b>${g}</b></span><div><div class="nm">${n}</div><div class="tg">${t}</div></div></div><div class="acts">${b}</div>`;
+ const ic=el.querySelector('.ic'),im=new Image(),sl=n.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),site=d||u,srcs=['icons/'+sl+'.png'];if(site)srcs.push('https://www.google.com/s2/favicons?sz=128&domain_url='+encodeURIComponent(H(site)));
+ im.alt='';im.onload=()=>{im.style.padding=im.src.includes('/icons/')?'0':'';ic.classList.add('ok')};im.onerror=()=>{srcs.length?im.src=srcs.shift():im.remove()};im.onerror();ic.append(im);
+ el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',e.clientX-r.left+'px');el.style.setProperty('--my',e.clientY-r.top+'px')});
+ io?io.observe(el):el.classList.add('in');return el}
+D.forEach(([id,title,sub,items])=>{total+=items.length;const s=document.createElement('section');s.id=id;s.innerHTML=`<h2>${title}<span>${items.length} apps</span></h2><p>${sub}</p><div class="grid"></div>`;const g=s.querySelector('.grid');items.forEach((a,i)=>g.append(card(a,i,id)));app.append(s);
+ const c=document.createElement('button');c.className='chip';c.dataset.c=id;c.innerHTML=`${title}<small>${items.length}</small>`;chips.append(c)});
+const all=document.createElement('button');all.className='chip';all.dataset.c='all';all.innerHTML=`All<small>${total}</small>`;chips.prepend(all);
+$('#stat').textContent=`${total} apps, games and websites across ${D.length} categories. Tap Open to launch, or Android / iOS to download.`;
+function filter(){const v=q.value.trim().toLowerCase();let shown=0;
+ document.querySelectorAll('section').forEach(s=>{let n=0;s.querySelectorAll('.card').forEach(c=>{const ok=(cat==='all'||cat===s.id)&&(!v||c.dataset.q.includes(v));c.style.display=ok?'':'none';if(ok){n++;if(!c.classList.contains('in')&&io){io.unobserve(c);io.observe(c)}}});s.style.display=n?'':'none';shown+=n});
+ $('#empty').classList.toggle('show',!shown);
+ chips.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.c===cat))}
+chips.addEventListener('click',e=>{const c=e.target.closest('.chip');if(c){cat=c.dataset.c;filter()}});
+q.addEventListener('input',filter);
+addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==q){e.preventDefault();q.focus()}else if(e.key==='Escape'){q.value='';q.blur();filter()}});
+const R=document.documentElement;
+function setT(m){R.dataset.theme=m;try{localStorage.setItem('hub-theme',m)}catch(e){}document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m))}
+document.querySelector('.seg').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setT(b.dataset.m)});
+let saved=null;try{saved=localStorage.getItem('hub-theme')}catch(e){}
+setT(saved||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+filter();
+</script></body></html>
